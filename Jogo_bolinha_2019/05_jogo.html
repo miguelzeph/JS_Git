@@ -62,9 +62,10 @@
             this.velocidade += this.gravidade;
             this.y += this.velocidade
 
-            if (this.y > chao.y - this.altura) {
+            if (this.y > chao.y - this.altura && estadoAtual != estados.perdeu) {
                 this.y = chao.y - this.altura;
                 this.qntPulos = 0;
+                this.velocidade = 0;
             }
         },
 
@@ -115,7 +116,14 @@
             // --------------Fazer o bloco andar para direita-----------
             for (var i = 0, tam = this._obs.length; i<tam; i++) {
                 var obs = this._obs[i];
+
                 obs.x -= velocidade;
+
+                if (bloco.x < obs.x + obs.largura && bloco.x + bloco.largura >= obs.x 
+                && bloco.y + bloco.altura >= chao.y - obs.altura ) {
+                
+                    estadoAtual = estados.perdeu;
+                };
                 
                 if (obs.x <= - obs.largura) {
                     this._obs.splice(i,1);
@@ -129,6 +137,10 @@
             };
             //------------------------------------------------------------
             
+        },
+
+        limpa: function () {
+            this._obs =[];
         },
 
         desenha: function() {
@@ -182,8 +194,9 @@
         else if (estadoAtual == estados.jogar) {
             estadoAtual = estados.jogando;
         }
-        else if (estadoAtual == estados.perdeu) {
+        else if (estadoAtual == estados.perdeu && bloco.y >= 8 * ALTURA) {
             estadoAtual = estados.jogar;
+            bloco.y = 0;
         }
         
     }
@@ -203,6 +216,10 @@
 
         if (estadoAtual == estados.jogando) {
             obstaculos.atualiza();
+        }
+
+        else if (estadoAtual == estados.perdeu) {
+            obstaculos.limpa()
         }
     }
 
