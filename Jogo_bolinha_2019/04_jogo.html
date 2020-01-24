@@ -22,6 +22,7 @@
 <!--JS-->
 <script>
     var canvas, ctx, ALTURA, LARGURA, frames =0,maxPulos = 3,
+        velocidade = 6
 
 
 
@@ -76,19 +77,46 @@
     obstaculos = {
         _obs: [],
         cores: ["#ffbc1c","#ff1c1c","#ff85e1","#52a7ff","#78ff5d"],
-        
+        tempoInsere:0,
 
         insere: function() {
             this._obs.push({
-                x: 200,
+                x: LARGURA, //Joga lá no final ----> o bloco
                 largura: 30 + Math.floor(21*Math.random()),
                 altura: 30 + Math.floor(120*Math.random()),
                 cor: this.cores[Math.floor(Math.random()*this.cores.length)],
             })
+
+            this.tempoInsere = 30 + Math.floor(Math.random()*20);
         },
 
         atualiza: function() {
+            
+            //-------------Tempo que o bloco vai ser inserido---------
+            if (this.tempoInsere == 0)
+                this.insere(); // insere o bloco automaticamente
+            else 
+                //this.tempoInsere = this.tempoInsere - Math.floor(2*Math.random());
+                this.tempoInsere--;
+            //---------------------------------------------------------
+            
+            // --------------Fazer o bloco andar para direita-----------
+            for (var i = 0, tam = this._obs.length; i<tam; i++) {
+                var obs = this._obs[i];
+                obs.x -= velocidade;
+                
+                if (obs.x <= - obs.largura) {
+                    this._obs.splice(i,1);
 
+                    //Resolver o problema de colocar mais de 1 obstaculo
+                    // pois quando ele remove, o for tentava acessar o elemento removido no vetor
+                    tam--;
+                    i--;
+                };
+            
+            };
+            //------------------------------------------------------------
+            
         },
 
         desenha: function() {
@@ -130,9 +158,13 @@
         
         roda();
     }
+
+
+
     function clique(event) {
         bloco.pula();
     }
+
     function roda() {
         atualiza();
         desenha();
@@ -143,7 +175,10 @@
     function atualiza() {
         frames++;
         bloco.atualiza();
+        obstaculos.atualiza();
     }
+
+
     function desenha() {
         
         //Desenha o quadro Azul grande (Tela)
