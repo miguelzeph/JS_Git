@@ -1,5 +1,5 @@
 var canvas, ctx, ALTURA, LARGURA,
-g = 9.8, t = 0, dt = 0.0001
+g = 9.8, t = 0, dt = 0.001, v0 = -10, teta = Math.PI/4,
 
 
 
@@ -15,18 +15,20 @@ chao = {
 };
 
 bloco ={
-    x:250,
-    y:0,
+    x:0,
+    y:550-chao.altura,
     altura:50,
     largura:50,
-    cor: "#ff4e4e",
-    v0y:0,
+    cor:"#ff4e4e",
+    v0y:v0*Math.sin(teta),
+    v0x:v0*Math.cos(teta),
     
     atualiza: function(){
+        // vertical
         this.y += this.v0y + g*t**2/2 ;
-        this.v0y += g*t;
+        this.v0y +=  -this.v0y*t + g*t;
 
-
+        /*
         if (this.y > chao.y - this.altura) {
             //this.y = chao.y - this.altura;
             this.v0y = -1*this.v0y;   
@@ -34,6 +36,11 @@ bloco ={
         else if (this.v0y == 0) {
             this.v0y = -1*this.v0y;
         }
+        */
+        //hotizontal
+        this.x -= this.v0x;
+        
+
     },
 
     desenha: function() {
@@ -102,7 +109,7 @@ function roda () {
 
     //console.log(bloco.v0y, t);
     
-    if (bloco.y - 7 > chao.y - bloco.altura) {
+    if (bloco.y -6 > chao.y - bloco.altura && t >0) {
         window.cancelAnimationFrame(roda);
     }
     else {

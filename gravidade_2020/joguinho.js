@@ -1,5 +1,5 @@
 var canvas, ctx, ALTURA, LARGURA,
-g = 9.8, t = 0, dt = 0.0001
+g = 9.8, t = 0, dt = 0.01, v0 = 5,
 
 
 
@@ -15,25 +15,43 @@ chao = {
 };
 
 bloco ={
-    x:250,
+    x:0,
     y:0,
     altura:50,
     largura:50,
-    cor: "#ff4e4e",
-    v0y:0,
+    cor:"#ff4e4e",
+    v0y:v0,
+    v0x:v0,
     
     atualiza: function(){
-        this.y += this.v0y + g*t**2/2 ;
-        this.v0y += g*t;
-
 
         if (this.y > chao.y - this.altura) {
-            //this.y = chao.y - this.altura;
-            this.v0y = -1*this.v0y;   
-        }
-        else if (this.v0y == 0) {
+            
             this.v0y = -1*this.v0y;
         }
+
+        else if (this.y < 0) {
+            
+            this.v0y = -1*this.v0y;
+         
+        }
+        
+        else if (this.x + this.largura > LARGURA) {
+
+            this.v0x = -1*this.v0x;
+        }
+
+        else if (this.x < 0) {
+
+            this.v0x = -1*this.v0x;
+        };
+        
+        //hotizontal
+        this.x += this.v0x;
+        // vertical
+        this.y += this.v0y ;
+        
+
     },
 
     desenha: function() {
@@ -100,14 +118,9 @@ function roda () {
     chao.desenha();
     //-----------------------
 
-    //console.log(bloco.v0y, t);
     
-    if (bloco.y - 7 > chao.y - bloco.altura) {
-        window.cancelAnimationFrame(roda);
-    }
-    else {
-        window.requestAnimationFrame(roda);
-    };
+    window.requestAnimationFrame(roda);
+    
     
 
 };
