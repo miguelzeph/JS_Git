@@ -2,4 +2,4 @@ const nome = 'miguel'
 
 //nome = 'ana' //  (NÃO PODEMOS FAZER COM CONST)
 
-console.log(nome)
+console.log(`Meu nome é ${nome}`)
