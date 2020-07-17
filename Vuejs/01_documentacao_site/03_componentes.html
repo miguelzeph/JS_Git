@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+
+
+
+
+
+    <!-- Vuejs LINK (Sempre acima)-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    
+
+    <!-- Executar Vue-->
+    <div id="app-7">
+        <ol>
+          <todo-item></todo-item>
+        </ol>
+    </div>
+
+    
+    <!-- Criar Instância-->
+    <script>
+
+
+    Vue.component('todo-item', {
+        template: '<li> Componentes</li>'
+    })
+      
+    var app7 = new Vue({
+        el: '#app-7',
+    })
+
+    
+    </script>
+
+
+    
+</body>
+</html>
